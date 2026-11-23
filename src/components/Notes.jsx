@@ -22,7 +22,12 @@ function Notes() {
     return saved ? JSON.parse(saved) : startingNotes
   })
  
-  const [form, newForm] = useState({ title: "", body: "" });
+  //kani na state kay para sa save draft sa localStorage
+  const [form, setForm] = useState(() => {
+    const saved = localStorage.getItem('draft')
+    return saved ? JSON.parse(saved) : { title: '', body: '' }
+  })
+
   const [search, setSearch] = useState("");
   const titleRef = useRef(null)
 
@@ -41,7 +46,7 @@ function Notes() {
  
   function handleChange(e) {
     const { name, value } = e.target;
-    newForm({
+    setForm({
       ...form,
       [name]: value,
     });
@@ -64,7 +69,7 @@ function Notes() {
     };
  
     setNotes([...notes, newNoteToWrite]);
-    newForm({ title: "", body: "" });
+    setForm({ title: "", body: "" });
     titleRef.current.focus()
   }
  
